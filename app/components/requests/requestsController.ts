@@ -1,0 +1,17 @@
+import { Component } from 'angular2-cli';
+
+@Component({
+    selector: 'requests-component',
+    template: require('./requests.html')
+})
+
+export class requestsComponent {
+    name: string;
+    userData: string;
+    policiesData: string;
+    constructor(nameParam: string, userData: string, policiesData: string) {
+        this.name = nameParam
+        this.userData = userData
+        this.policiesData = policiesData
+    }
+}
