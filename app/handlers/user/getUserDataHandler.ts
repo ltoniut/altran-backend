@@ -1,10 +1,10 @@
 import { User, Source as UserSrc } from '../../models/user'
 import { clients as clientsProvider } from '../../assets/providers/urls';
 
-async function getUserData(searchParam: string) {
+function getUserData(searchParam: string): User {
     const clients: UserSrc[] = JSON.parse(clientsProvider).clients as UserSrc[];
 
-    
+    return findUser(clients, searchParam);
 }
 
 function findUser(source: UserSrc[], searchParam: string): User {
@@ -13,5 +13,5 @@ function findUser(source: UserSrc[], searchParam: string): User {
             return new User(source[i]);
         }
     }
-
+    // TODO Throw an error if user isn't found
 }

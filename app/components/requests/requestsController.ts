@@ -7,11 +7,7 @@ import { Component } from 'angular2-cli';
 
 export class requestsComponent {
     name: string;
-    userData: string;
-    policiesData: string;
-    constructor(nameParam: string, userData: string, policiesData: string) {
+    constructor(nameParam: string) {
         this.name = nameParam
-        this.userData = userData
-        this.policiesData = policiesData
     }
 }
