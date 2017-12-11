@@ -28,7 +28,7 @@ app.use('/', index);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
 	var err = new Error('Not Found');
-	err.status = 404;
+	res.status = 404;
 	next(err);
 });
 
@@ -41,36 +41,52 @@ app.use(function (err, req, res, next) {
 	// render the error page
 	res.status(err.status || 500);
 	res.render('error');
+});
 
-	// Server configuration
+// Server configuration
 
-	// handle CORS requests
-	app.use(function (req, res, next) {
-		res.setHeader("Access-Control-Allow-Origin", "*");
-		res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
-		res.setHeader("Access-Control-Allow-Headers", "X-Requested-With,content-type,x-access-token");
+// log all requests to the console
 
-		if ('OPTIONS' === req.method)
-			res.send(200);
-		else
-			next();
-	})
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-	// app route
-	app.use('/app', express.static(path.join(__dirname, '/app')));
+// handle CORS requests
+app.use(function (req, res, next) {
+	res.setHeader("Access-Control-Allow-Origin", "*");
+	res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
+	res.setHeader("Access-Control-Allow-Headers", "X-Requested-With,content-type,x-access-token");
 
-	// set static files location
-	app.use(express.static(path.join(__dirname, "/public")));
+	if ('OPTIONS' === req.method)
+		res.send(200);
+	else
+		next();
+})
 
-	// Request Handlers
-	const handlers = {
-		getUserData: require('./app/handlers/user/getUserDataHandler'),
-		getUserPolicies: require('./app/handlers/user/getUserPoliciesHandler'),
-		getPolicyOwner: require('./app/handlers/policy/getPolicyOwner')
-	};
+// app route
+app.use('/app', express.static(path.join(__dirname, '/app')));
 
-	// Application routes
-	routes.setup(app, handlers);
+// set static files location
+app.use(express.static(path.join(__dirname, "/public")));
+
+// Request Handlers
+const handlers = {
+	getUserData: require('./app/handlers/user/getUserDataHandler'),
+	getUserPolicies: require('./app/handlers/user/getUserPoliciesHandler'),
+	getPolicyOwner: require('./app/handlers/policy/getPolicyOwnerHandler')
+};
+
+// Application routes
+routes.setup(app, handlers);
+
+// ---- MAIN CATCHALL ROUTE - SEND USERS TO FRONTEND ----
+app.get("*", function (req, res) {
+	res.sendFile(path.join(__dirname, "/public/app/views/index.html"));
+});
+
+// ---- START SERVER ----
+const port = process.env.PORT || 8085;
+const server = app.listen(port, function () {
+	if (process.env.NODE_ENV !== 'test') console.log("Server running on port " + port);
 });
 
 module.exports = app;

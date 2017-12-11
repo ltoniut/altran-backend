@@ -1,4 +1,4 @@
-
+var express = require('express');
 
 function setup(app, handlers) {
 	// ########## Routes ##########
@@ -20,7 +20,7 @@ function setup(app, handlers) {
 
 	const policyRouter = express.Router();
 
-	policyRouter.post('/', handlers.getPolicyOwner);
+	policyRouter.post('/', handlers.getPolicyOwner.getPolicyOwner);
 
 	app.use('/api/policy/user', policyRouter);
 };

@@ -3,7 +3,7 @@ import { Policy, Source as PolicySrc } from '../../models/policy';
 import { clients as clientsProvider } from '../../assets/providers/urls';
 import { policies as policiesProvider } from '../../assets/providers/urls';
 
-function getUserPolicies(clientId: string): Policy[] {
+export function getUserPolicies(clientId: string): Policy[] {
     const clients: UserSrc[] = JSON.parse(clientsProvider).clients as UserSrc[];
     const user: User = findUserById(clients, clientId);
     // TODO Throw an error if user isn't found
@@ -12,7 +12,7 @@ function getUserPolicies(clientId: string): Policy[] {
     return findPolicies(policies, clientId);
 }
 
-function findPolicies(source: PolicySrc[], clientId: string): Policy[] {
+export function findPolicies(source: PolicySrc[], clientId: string): Policy[] {
     const policies: Policy[] = [];
 
     for (let i = 0; i < source.length; i++) {
@@ -24,7 +24,7 @@ function findPolicies(source: PolicySrc[], clientId: string): Policy[] {
     return policies;
 }
 
-function findUserById(source: UserSrc[], clientId: string): User {
+export function findUserById(source: UserSrc[], clientId: string): User {
     for (let i = 0; i < source.length; i++) {
         if (source[i].id === clientId) {
             return new User(source[i]);
